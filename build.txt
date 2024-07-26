@@ -1,0 +1,3 @@
+displayName = Odyssey Mode
+author = Oskar Kraak
+version = 0.1
