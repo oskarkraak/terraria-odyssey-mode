@@ -43,7 +43,7 @@ namespace OdysseyMode
 			//Terraria.GameContent.Creative.CreativePowers.GodmodePower power =
 			//Terraria.GameContent.Creative.CreativePowerManager.Instance.GetPower<Terraria.GameContent.Creative.CreativePowers.GodmodePower>();
 			
-			//power.
+			//Terraria.GameContent.Creative.CreativePowers.DifficultySliderPower
 
             // Use reflection to access private fields in Main
             //FieldInfo buttonField = typeof(Main).GetField("invisibleButton", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -87,6 +87,16 @@ namespace OdysseyMode
             
                 //HookEndpointManager.Add(method, new Func<SomeClass, bool>(OverrideGetIsUnlocked));
             }
+
+
+
+            Type targetType2 = typeof(Terraria.GameContent.Creative.CreativePowers.DifficultySliderPower); 
+            PropertyInfo propertyInfo = targetType2.GetProperty("DefaultPermissionLevel", BindingFlags.Public | BindingFlags.Instance);
+
+            Terraria.GameContent.Creative.CreativePowers.DifficultySliderPower instance =
+			Terraria.GameContent.Creative.CreativePowerManager.Instance.GetPower<Terraria.GameContent.Creative.CreativePowers.DifficultySliderPower>();
+			propertyInfo.SetValue(instance, Terraria.GameContent.Creative.PowerPermissionLevel.LockedForEveryone); // Replace PowerPermissionLevel.None with the desired value
+
         }
 
         private bool OverrideGetIsUnlocked(Terraria.GameContent.Creative.CreativePowers.GodmodePower instance)
