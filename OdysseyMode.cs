@@ -1,110 +1,40 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using MonoMod.RuntimeDetour;
-using MonoMod.RuntimeDetour.HookGen;
-using Terraria;
 using Terraria.ModLoader;
-using Terraria.UI;
+using Terraria.GameContent.Creative;
 
 namespace OdysseyMode
 {
-
-    public class HideMinimap : ModSystem
+    public class PowerLocker : ModSystem
     {
-		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-        {
-            for (int i = 0; i < layers.Count; i++)
-            {
-				//Terraria.UI.Chat.ChatManager.AddChatText(null, layers[i].Name, Terraria.UI.Chat.ChatManager.ShadowDirections[0]);
-				//layers.ElementAt(i).Active = false;
-                //Remove Resource bars
-                if (layers[i].Name.Contains("Inventory")) // https://github-wiki-see.page/m/tModLoader/tModLoader/wiki/Vanilla-Interface-layers-values
-                {
-					//layers[i].Draw
-					//layers.RemoveAt(i);
-                }
-            }
-        }
-
         public override void Load()
         {
-			// Ensure the CustomUnlockable class is loaded
-            CustomUnlockable customUnlockable = new CustomUnlockable();
-            customUnlockable.Load();
-			
-			//Terraria.GameContent.Creative.CreativePowers.;
-			//Main.MenuUI.;
-			//Main.CreativeMenu.Draw()
-			//Main.MenuUI += Test;
-			//Main.menuMode = 0;
- 
-			//Terraria.GameContent.Creative.CreativePowers.GodmodePower power =
-			//Terraria.GameContent.Creative.CreativePowerManager.Instance.GetPower<Terraria.GameContent.Creative.CreativePowers.GodmodePower>();
-			
-			//Terraria.GameContent.Creative.CreativePowers.DifficultySliderPower
-
-            // Use reflection to access private fields in Main
-            //FieldInfo buttonField = typeof(Main).GetField("invisibleButton", BindingFlags.NonPublic | BindingFlags.Instance);
-            //List<UIElement> buttons = (List<UIElement>)buttonField.GetValue(Main.instance);
-
-//			.SetEnabledState() = 0;
-
-
-        	
-        }
-/*
-        private void CreativeUI_Update(On.Terraria.UI.CreativeUI.orig_Update orig, CreativeUI self, GameTime gameTime)
-        {
-            // Call the original method to ensure normal update functionality
-            orig(self, gameTime);
-
-            // Remove the Personal Power Menu from the Creative UI
-            self.personalPowerMenu = null;
+            LockPower<CreativePowers.GodmodePower>();
+            LockPower<CreativePowers.DifficultySliderPower>();
+            LockPower<CreativePowers.FreezeTime>();
+            LockPower<CreativePowers.FarPlacementRangePower>();
+            LockPower<CreativePowers.StopBiomeSpreadPower>();
+            LockPower<CreativePowers.SpawnRateSliderPerPlayerPower>();
         }
 
-		private void Test() {
-
-		}
-*/
-		
-    }
-
-	public class CustomUnlockable : ModSystem
-    {
-		private Hook _getIsUnlockedHook;
-        public override void Load()
+        public static void LockPower<T>() where T : ICreativePower
         {
-            // Assuming the class and method are in Terraria namespace.
-            // Adjust the namespace and class name as per your requirements.
-            Type targetType = typeof(Terraria.GameContent.Creative.CreativePowers.GodmodePower); // Replace with the actual class
-            MethodInfo method = targetType.GetMethod("GetIsUnlocked", BindingFlags.Public | BindingFlags.Instance);
-
-            if (method != null)
+            Type targetType = typeof(T);
+            T instance = CreativePowerManager.Instance.GetPower<T>();
+            if (instance == null)
             {
-                _getIsUnlockedHook = new Hook(method, new Func<Terraria.GameContent.Creative.CreativePowers.GodmodePower, bool>(OverrideGetIsUnlocked));
-            
-                //HookEndpointManager.Add(method, new Func<SomeClass, bool>(OverrideGetIsUnlocked));
+                throw new InvalidOperationException($"Unable to create an instance of '{targetType.Name}'.");
             }
 
-
-
-            Type targetType2 = typeof(Terraria.GameContent.Creative.CreativePowers.DifficultySliderPower); 
-            PropertyInfo propertyInfo = targetType2.GetProperty("DefaultPermissionLevel", BindingFlags.Public | BindingFlags.Instance);
-
-            Terraria.GameContent.Creative.CreativePowers.DifficultySliderPower instance =
-			Terraria.GameContent.Creative.CreativePowerManager.Instance.GetPower<Terraria.GameContent.Creative.CreativePowers.DifficultySliderPower>();
-			propertyInfo.SetValue(instance, Terraria.GameContent.Creative.PowerPermissionLevel.LockedForEveryone); // Replace PowerPermissionLevel.None with the desired value
-
-        }
-
-        private bool OverrideGetIsUnlocked(Terraria.GameContent.Creative.CreativePowers.GodmodePower instance)
-        {
-            // Custom logic to determine if it should be unlocked or not
-            // Return false as per your requirement
-            return false;
+            PropertyInfo propertyInfo = targetType.GetProperty("DefaultPermissionLevel", BindingFlags.Public | BindingFlags.Instance);
+            if (propertyInfo != null && propertyInfo.CanWrite)
+            {
+                propertyInfo.SetValue(instance, PowerPermissionLevel.LockedForEveryone);
+            }
+            else
+            {
+                throw new ArgumentException($"Property 'DefaultPermissionLevel' not found or is not writable on type '{targetType.Name}'.");
+            }
         }
     }
-
 }
