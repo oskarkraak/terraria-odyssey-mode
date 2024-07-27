@@ -9,21 +9,23 @@ namespace OdysseyMode
     {
         public override void Load()
         {
+            setMasterMode();
             LockPower<CreativePowers.GodmodePower>();
             LockPower<CreativePowers.DifficultySliderPower>();
             LockPower<CreativePowers.FreezeTime>();
             LockPower<CreativePowers.FarPlacementRangePower>();
             LockPower<CreativePowers.StopBiomeSpreadPower>();
             LockPower<CreativePowers.SpawnRateSliderPerPlayerPower>();
-
-            setMasterMode();
         }
 
         private void setMasterMode() {
             CreativePowers.DifficultySliderPower difficultySliderPower = CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
-            Type targetType = typeof(CreativePowers.DifficultySliderPower);
-            PropertyInfo property = targetType.GetProperty("StrengthMultiplierToGiveNPCs", BindingFlags.Public | BindingFlags.Instance);
-            property.SetValue(difficultySliderPower, 3f);
+            Type targetType = typeof(CreativePowers.ASharedSliderPower);
+            FieldInfo field;
+            field = targetType.GetField("_currentTargetValue", BindingFlags.NonPublic | BindingFlags.Instance);
+            field.SetValue(difficultySliderPower, 1f);
+            field = targetType.GetField("_needsToCommitChange", BindingFlags.NonPublic | BindingFlags.Instance);
+            field.SetValue(difficultySliderPower, true);
         }
 
         public static void LockPower<T>() where T : ICreativePower
