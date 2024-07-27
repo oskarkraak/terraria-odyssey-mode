@@ -1,1 +1,18 @@
-Modify this file with a description of your mod.
+Odyssey mode disables some powers from Journey that would ruin the fun of a playthrough, while preserving the Journey mode features that reduce the grind.
+It locks the difficulty on Master mode.
+
+It disables:
+- godmode
+- difficulty slider
+- spawn rate slider
+- toggle biome spread
+- far placement range
+- freeze time
+
+It preserves:
+- unlocking (researching) unlimited items
+- time speed slider
+- changing time of day
+- changing weather
+
+Don't use with non-Journey-mode characters, untested!
