@@ -15,6 +15,15 @@ namespace OdysseyMode
             LockPower<CreativePowers.FarPlacementRangePower>();
             LockPower<CreativePowers.StopBiomeSpreadPower>();
             LockPower<CreativePowers.SpawnRateSliderPerPlayerPower>();
+
+            setMasterMode();
+        }
+
+        private void setMasterMode() {
+            CreativePowers.DifficultySliderPower difficultySliderPower = CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
+            Type targetType = typeof(CreativePowers.DifficultySliderPower);
+            PropertyInfo property = targetType.GetProperty("StrengthMultiplierToGiveNPCs", BindingFlags.Public | BindingFlags.Instance);
+            property.SetValue(difficultySliderPower, 3f);
         }
 
         public static void LockPower<T>() where T : ICreativePower
