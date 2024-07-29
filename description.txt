@@ -1,4 +1,4 @@
-Odyssey mode disables some powers from Journey that would ruin the fun of a playthrough, while preserving the Journey mode features that reduce the grind.
+Odyssey mode disables some powers from Journey mode that would ruin the fun of an actual playthrough, while preserving the Journey mode features that reduce the grind.
 It locks the difficulty on Master mode.
 
 It disables:
