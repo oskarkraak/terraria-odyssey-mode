@@ -18,6 +18,16 @@ namespace OdysseyMode
             LockPower<CreativePowers.SpawnRateSliderPerPlayerPower>();
         }
 
+        public override void OnWorldUnload()
+        {
+            UnlockPower<CreativePowers.GodmodePower>();
+            UnlockPower<CreativePowers.DifficultySliderPower>();
+            UnlockPower<CreativePowers.FreezeTime>();
+            UnlockPower<CreativePowers.FarPlacementRangePower>();
+            UnlockPower<CreativePowers.StopBiomeSpreadPower>();
+            UnlockPower<CreativePowers.SpawnRateSliderPerPlayerPower>();
+        }
+
         private static void SetMasterMode() {
             SetDifficultyToMasterMode();
             SetSliderToMasterMode();
@@ -43,6 +53,11 @@ namespace OdysseyMode
         public static void LockPower<T>() where T : ICreativePower
         {
             ChangePowerPermissionLevel<T>(PowerPermissionLevel.LockedForEveryone);
+        }
+
+        public static void UnlockPower<T>() where T : ICreativePower
+        {
+            ChangePowerPermissionLevel<T>(PowerPermissionLevel.CanBeChangedByEveryone);
         }
 
         public static void ChangePowerPermissionLevel<T>(PowerPermissionLevel permissionLevel) where T : ICreativePower
