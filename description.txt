@@ -15,4 +15,6 @@ It preserves:
 - changing time of day
 - changing weather
 
-Don't use with non-Journey-mode characters, untested!
+Attention!
+- Don't use with non-Journey-mode characters, untested!
+- The mod can't automatically set the difficulty in multiplayer. Instead, disable the mod, join the world, change difficulty to Master mode, then enable the mod and continue playing.
