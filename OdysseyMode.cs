@@ -42,6 +42,11 @@ namespace OdysseyMode
 
         public static void LockPower<T>() where T : ICreativePower
         {
+            ChangePowerPermissionLevel<T>(PowerPermissionLevel.LockedForEveryone);
+        }
+
+        public static void ChangePowerPermissionLevel<T>(PowerPermissionLevel permissionLevel) where T : ICreativePower
+        {
             Type targetType = typeof(T);
             T instance = CreativePowerManager.Instance.GetPower<T>();
             if (instance == null)
@@ -52,7 +57,7 @@ namespace OdysseyMode
             PropertyInfo propertyInfo = targetType.GetProperty("DefaultPermissionLevel", BindingFlags.Public | BindingFlags.Instance);
             if (propertyInfo != null && propertyInfo.CanWrite)
             {
-                propertyInfo.SetValue(instance, PowerPermissionLevel.LockedForEveryone);
+                propertyInfo.SetValue(instance, permissionLevel);
             }
             else
             {
