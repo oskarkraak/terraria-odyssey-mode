@@ -1,5 +1,5 @@
-Odyssey mode disables some powers from Journey that would ruin the fun of a playthrough, while preserving the Journey mode features that reduce the grind.
-It locks the difficulty on Master mode.
+Odyssey mode disables some powers from Journey mode that would ruin the fun of an actual playthrough, while preserving the Journey mode features that reduce the grind.
+It locks the difficulty. To change the difficulty, disable the mod, create a new world, join it, change the difficulty to your desired value (we recommend Master mode difficulty since Journey mode gives you easy access to strong items), then enable the mod and enjoy your playthrough.
 
 It disables:
 - godmode
